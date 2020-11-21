@@ -6,7 +6,7 @@ kaniko:
   only:
     refs: # branches to run on
       - mainline
-      - develop
+      # - develop
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:debug-v0.16.0

@@ -7,6 +7,8 @@ from .forms import *
 from django.utils import timezone
 import pytz
 # Create your views here.
+letters = ['a', 'c', 'd', 'e', 'g', 'i', 'k', 'l',
+           'm', 'n', 'q', 'r', 's', 't', 'u', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
 def handler404(request):
@@ -24,4 +26,7 @@ def handler404(request):
 
 
 def shorty(request):
+    form = shorties_form()
+    template_name = 'shorty.html'
+    # s, created = shorties.objects.get_or_create(alias=alias)
     return render(request, 'shorty.html')

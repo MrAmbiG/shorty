@@ -1,0 +1,56 @@
+stages:
+  - dockerize
+
+kaniko:
+  # https://docs.gitlab.com/ee/ci/docker/using_kaniko.html#building-a-docker-image-with-kaniko
+  only:
+    refs: # branches to run on
+      - mainline
+      - develop
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug-v0.16.0
+    entrypoint: [""]
+  before_script:
+    - |
+      echo "-----BEGIN CERTIFICATE-----
+      MIIFJTCCBA2gAwIBAgITXwAAE455JgmLBl5cFgAAAAATjjANBgkqhkiG9w0BAQsF
+      ADBHMRMwEQYKCZImiZPyLGQBGRYDY29tMRMwEQYKCZImiZPyLGQBGRYDYW1kMRsw
+      GQYDVQQDExJBTUQtY29tIElzc3VpbmcgQ0EwHhcNMjAwMzE5MDkxNTE5WhcNMjIw
+      MzE5MDkxNTE5WjCBtjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWEx
+      FDASBgNVBAcTC1NhbnRhIENsYXJhMR8wHQYDVQQKExZBZHZhbmNlZCBNaWNybyBE
+      ZXZpY2VzMRQwEgYDVQQLEwtNTFNFIERldk9wczEeMBwGA1UEAxMVcmVnaXN0cnku
+      cm9jbS5hbWQuY29tMSUwIwYJKoZIhvcNAQkBFhZkbC5NTFNFLkRldk9wc0BhbWQu
+      Y29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt+w2xp8IUg4QMx1B
+      fiz6h1tUjdJajtHRhMtvFmcBlkpyWNTzAGjcEbE8UUsMyLAOmmH0oVUJVUBTgabS
+      RraYmp5do8ii+3Rgsxu0cOKk7IhSmWJuwVJ73X8zl5J3n3pflTfwcMx4/mAyTXbk
+      ym9FU0xJhQPS+571tilL4dsdpneRXpQH5xFEX7zARIP8qJfHa1T65nBh0Dg7bdus
+      o9frON2fcPelrEh0uP2EF9ZOczFlnLc+w2XXIGyvkbyajhV1LJSmMroxagW2b/sE
+      vYwj87Kp2//73Ur7/hWmG1dUc+pdwhz2FOu3bQEBYUViygXkiM+KMJ8US08UfBWc
+      FkWjpQIDAQABo4IBmDCCAZQwIAYDVR0RBBkwF4IVcmVnaXN0cnkucm9jbS5hbWQu
+      Y29tMB0GA1UdDgQWBBSw/sxs4w6f/gXirSa4FyhYxgqHkzAfBgNVHSMEGDAWgBT9
+      JPD0WjWHTRnvjIz1Z/AxV2evfDBJBgNVHR8EQjBAMD6gPKA6hjhodHRwOi8vcGtp
+      LmFtZC5jb20vQ2VydEVucm9sbC9BTUQtY29tJTIwSXNzdWluZyUyMENBLmNybDBn
+      BggrBgEFBQcBAQRbMFkwVwYIKwYBBQUHMAKGS2h0dHA6Ly9wa2kuYW1kLmNvbS9D
+      ZXJ0RW5yb2xsL0F0bGNlcnRwMDEuYW1kLmNvbV9BTUQtY29tJTIwSXNzdWluZyUy
+      MENBLmNydDALBgNVHQ8EBAMCBaAwPQYJKwYBBAGCNxUHBDAwLgYmKwYBBAGCNxUI
+      h72nSYSV8ieFxYMbgvGnYIOgoSwfgZD9KYeglWoCAWQCATUwEwYDVR0lBAwwCgYI
+      KwYBBQUHAwEwGwYJKwYBBAGCNxUKBA4wDDAKBggrBgEFBQcDATANBgkqhkiG9w0B
+      AQsFAAOCAQEAFvT8XkWyHV4GmvMT1DA+ekYezujw+8/Goj3ElXeyfbhZWQLHrRac
+      oA2i24yHVaDtoCBSm+ZjSBddoxmKQtxpQRqiYQoKxpATAxryKTDK0EQM1xX7rSaX
+      Y44IvWkJT1ImqONYhto42usltqXwC1qL2Nh7hDJBCa0ua78axqnigjfInby0VOVk
+      5TWxidjUL/kx16hCYB0+ziQHvEgcZPmT+eyE9u0TnmYPQSNdfmqXpIX1iYuBKIYw
+      y2MGEE22nNvlr0xLF5ULnQYVHTI3NjO7adRLo4KvasJw9M9cvdtLa9Zmcm2NE8fH
+      4xDWzU8JvLnnM2fMfgUChA3u1Lvg/3DLYw==
+      -----END CERTIFICATE-----" >> /kaniko/ssl/certs/additional-ca-cert-bundle.crt
+  script:
+    - echo "{\"auths\":{\"$ROCM_REGISTRY\":{\"auth\":\"$(echo -n $ROCM_REGISTRY_USER:$ROCM_REGISTRY_PASSWORD | base64)\"}}}" > /kaniko/.docker/config.json
+    # for each tag that you want to add append '--destination $ROCM_REGISTRY_IMAGE' at the end of the below line
+    - /kaniko/executor --context $SOURCES_DIR --dockerfile $SOURCES_DIR/$DOCKERFILE --destination $RESTAPI_IMAGE_NAME:$IMAGE_TAG
+
+  variables:
+    # registry/project/image:tag
+    RESTAPI_IMAGE_NAME: registry.rocm.amd.com/citadel-staging/shorty
+    IMAGE_TAG: latest
+    SOURCES_DIR: .
+    DOCKERFILE: Dockerfile

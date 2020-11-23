@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.urls import resolve
 from django.http import HttpResponseRedirect, HttpResponse
@@ -9,6 +9,7 @@ import pytz
 import random
 import string
 LENGTH = 5
+
 # Create your views here.
 letters = ['a', 'c', 'd', 'e', 'g', 'i', 'k', 'l',
            'm', 'n', 'q', 'r', 's', 't', 'u', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -35,15 +36,34 @@ def shorty(request):
         form = shorties_form(request.POST or None)
         if form.is_valid():
             original = str(form.cleaned_data['original']).lower()
-            alias = form.cleaned_data['alias']
-            ranstring = ''.join(random.choice(letters) for i in range(LENGTH))
-            while not shorties.objects.filter(alias=ranstring).exists():
-                ranstring = ''.join(random.choice(letters)
-                                    for i in range(LENGTH))
-            s, created = shorties.objects.get_or_create(
-                original=original, alias=ranstring)
-            s.save()
-            response = {"alias": alias, "original": original}
-            return render(request, "result.html", response)
+            alias = None
+            if 'https:' in original:
+                https = True
+            else:
+                https = False
+            if not shorties.objects.filter(original=original).exists():
+                alias = ''.join(random.choice(letters)
+                                for i in range(LENGTH))
+                s, created = shorties.objects.get_or_create(
+                    original=original, alias=alias, https=https)
+                s.save()
+            else:
+                obj = shorties.objects.filter(original=original)[0]
+                alias = obj.alias
+                https = obj.https
+            context = {}
+            context['alias'] = alias
+            context['original'] = original
+            context['https'] = https
+            return render(request, "result.html", context)
     else:
+        print('form is not valid or not POST')
         return render(request, template, {'form': form})
+
+
+def reroute(request, id):
+    url = request.META['HTTP_HOST']
+    if shorties.objects.filter(alias=str(id)).exists():
+        url = shorties.objects.filter(alias=id)[0].original
+    print(url)
+    return redirect(url)

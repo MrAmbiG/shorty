@@ -1,15 +1,19 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}shorty{% endblock title %}
 
 {% block content %}
-    <div class="card mx-auto shadow p-3 mb-5 bg-white rounded text-center" style="max-width: 40rem;">
-    <form>
-        <div class="form-group">
-            <label for="address">Enter url</label>
-            <input type="url" class="form-control" id="url" placeholder="Enter address">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+<div class="card mx-auto shadow p-3 mb-5 bg-white rounded text-left" style="max-width: 30rem;">
+    <div class="card-body lead">
+        <form method="post">
+            {% csrf_token %}
+            <div class="container">
+                  {{ form|crispy }}
+            </div>
+            <br>
+            <input type="submit" class="btn btn-primary" value="submit">
+        </form>
     </div>
+</div>
 {% endblock content %}
 

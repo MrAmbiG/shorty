@@ -3,7 +3,12 @@
 
 {% block content %}
     <div class="card mx-auto shadow p-3 mb-5 bg-white rounded text-center" style="max-width: 40rem;">
-    {{ request.alias }}
-    {{ request.original }}
+    <h1>Result</h1>
+    Original Url <a href="{{ original }}">{{ original }}</a>
+    {% if https %}
+        Short Url <a href="https://{{ request.META.HTTP_HOST }}/{{ alias }}">https://{{ request.META.HTTP_HOST }}/{{ alias }}</a>
+    {% else %}
+        Short Url <a href="http://{{ request.META.HTTP_HOST }}/{{ alias }}">http://{{ request.META.HTTP_HOST }}/{{ alias }}</a>
+    {% endif %}
     </div>
 {% endblock content %}

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from .config import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u)stc2vur#*e@c7%xmt$ixfr3weu09qqty&laci7&x=u@m3=-7'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -78,24 +79,20 @@ WSGI_APPLICATION = 'shorty.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
 
     'default': {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'shorty',
+        'NAME': SHORTY_PG_DB,
 
-        'USER': 'shorty',
+        'USER': SHORTY_PG_USERNAME,
 
-        'PASSWORD': 'shorty',
+        'PASSWORD': SHORTY_PG_PASSWORD,
 
-        'HOST': '10.216.55.145',
+        'HOST': SHORTY_PG_HOST,
 
-        'PORT': '30232',
+        'PORT': SHORTY_PG_PORT,
 
     }
 }

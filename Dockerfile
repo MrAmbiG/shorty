@@ -6,6 +6,9 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir shorty
 
 COPY shorty /shorty
+COPY run.sh /
+
+RUN chmod +x /*.sh
 
 # RUN ls -altr
 
@@ -13,4 +16,4 @@ RUN pip install -r /shorty/requirements.txt
 
 RUN ls -altr /shorty
 
-# ENTRYPOINT ["python /shorty/manage.py runserver"]
+ENTRYPOINT ["python /shorty/manage.py runserver"]

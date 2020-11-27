@@ -2,17 +2,27 @@ from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.urls import resolve
 from django.http import HttpResponseRedirect, HttpResponse
-from .models import *
-from .forms import *
+from .models import shorties
+from .forms import shorties_form
 from django.utils import timezone
 import pytz
 import random
 import string
+from django.utils.crypto import get_random_string
 LENGTH = 5
 
 # Create your views here.
 letters = ['a', 'c', 'd', 'e', 'g', 'i', 'k', 'l',
            'm', 'n', 'q', 'r', 's', 't', 'u', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '8', '9']
+
+
+def create_new_ref_number():
+    alias = get_random_string(length=LENGTH, allowed_chars=letters)
+    check = shorties.objects.filter(alias=alias).exists()
+    if check:
+        create_new_ref_number()
+    else:
+        return alias
 
 
 def handler404(request):
@@ -35,15 +45,13 @@ def shorty(request):
     if request.method == 'POST':
         form = shorties_form(request.POST or None)
         if form.is_valid():
+            alias = create_new_ref_number()
             original = str(form.cleaned_data['original']).lower()
-            alias = None
             if 'https:' in original:
                 https = True
             else:
                 https = False
             if not shorties.objects.filter(original=original).exists():
-                alias = ''.join(random.choice(letters)
-                                for i in range(LENGTH))
                 s, created = shorties.objects.get_or_create(
                     original=original, alias=alias, https=https)
                 s.save()

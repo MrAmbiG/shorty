@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import shorties
 
 
 class shorties_form(forms.ModelForm):

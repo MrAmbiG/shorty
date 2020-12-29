@@ -1,0 +1,1 @@
+docker build --no-cache  -t shorty -f ./Deployment/Dockerfile .

@@ -1,13 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from django.urls import resolve
-from django.http import HttpResponseRedirect, HttpResponse
 from .models import shorties
 from .forms import shorties_form
-from django.utils import timezone
-import pytz
-import random
-import string
 from django.utils.crypto import get_random_string
 LENGTH = 5
 

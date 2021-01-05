@@ -1,4 +1,4 @@
-FROM python:3.6-slim
+FROM python:3.6-buster
 RUN mkdir shorty
 COPY shorty shorty
 COPY requirements.txt /

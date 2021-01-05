@@ -2,7 +2,9 @@ name: ci
 
 on:
   push:
-    branches: k8s
+    branches:
+      - k8s
+      - main
 
 jobs:
   path-context:

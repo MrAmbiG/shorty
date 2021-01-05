@@ -1,4 +1,4 @@
-#!/bin/bash
+gajuambi#!/bin/bash
 cd shorty
 python manage.py collectstatic --noinput
 python manage.py makemigrations

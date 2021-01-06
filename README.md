@@ -12,4 +12,4 @@ A url shortener for and on kubernetes
 ## Running docker image
 If you are running a docker image then pass a env file `--env-file`
 https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file
-`docker run --env-file .env ---image gajuambi/shorty --name shorty`
+`docker run --name shorty -it --env-file .env  gajuambi/shorty -p 8001:8001`

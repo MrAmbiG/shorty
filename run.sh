@@ -1,5 +1,4 @@
 #!/bin/bash
-ls
 cd shorty
 python manage.py collectstatic --noinput
 python manage.py makemigrations

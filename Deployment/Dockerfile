@@ -5,4 +5,4 @@ COPY requirements.txt /
 COPY run.sh /
 EXPOSE 8001
 RUN pip install -r requirements.txt
-ENTRYPOINT ["run.sh"]
+ENTRYPOINT ["/bin/bash", "/run.sh"]

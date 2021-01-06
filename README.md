@@ -9,7 +9,11 @@ A url shortener for and on kubernetes
     - SHORTY_PG_PASSWORD
     - SHORTY_PG_DB
     - DJANGO_SECRET_KEY
-## Running docker image
+## Running docker image [currently not working]
 If you are running a docker image then pass a env file `--env-file`
 https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file
 `docker run --name shorty -it --env-file .env  gajuambi/shorty -p 8001:8001`
+
+## Docker-compose [working]
+`cd Deployment`
+`doker-compose up`

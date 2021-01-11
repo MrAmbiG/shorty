@@ -33,13 +33,13 @@ securityContext: {}
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
+  runAsNonRoot: true
   # runAsUser: 1000
 
 service:
   type: ClusterIP
   port: 80
-  targetPort: 8001
+  targetPort: 8000
 
 ingress:
   enabled: false

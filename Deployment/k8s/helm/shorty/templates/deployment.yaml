@@ -33,6 +33,21 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: SHORTY_PG_DB
+            value: ""
+          - name: SHORTY_PG_USERNAME
+            value: ""
+          - name: SHORTY_PG_PASSWORD
+            value: ""
+          - name: SHORTY_PG_HOST
+            value: ""
+          - name: SHORTY_PG_PORT
+            value: ""
+          - name: SHORTY_PG_DB
+            value: ""
+          - name: DJANGO_SECRET_KEY
+            value: ""
           ports:
             - name: http
               containerPort: 80

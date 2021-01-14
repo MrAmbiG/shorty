@@ -35,31 +35,29 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: SHORTY_PG_DB
-            value: ""
+            value: {{ .Values.env.SHORTYPGDB | quote }}
           - name: SHORTY_PG_USERNAME
-            value: ""
+            value: {{ .Values.env.SHORTYPGUSERNAME | quote }}
           - name: SHORTY_PG_PASSWORD
-            value: ""
+            value: {{ .Values.env.SHORTYPGPASSWORD | quote }}
           - name: SHORTY_PG_HOST
-            value: ""
+            value: {{ .Values.env.SHORTYPGHOST | quote }}
           - name: SHORTY_PG_PORT
-            value: ""
-          - name: SHORTY_PG_DB
-            value: ""
+            value: {{ .Values.env.SHORTYPGPORT | quote }}
           - name: DJANGO_SECRET_KEY
-            value: ""
+            value: {{ .Values.env.DJANGOSECRETKEY | quote }}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
+            - containerPort: {{ .Values.service.targetPort }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

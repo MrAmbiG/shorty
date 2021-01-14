@@ -6,3 +6,4 @@ db.sqlite3
 .env
 config.py
 migrations/*
+shortyvalues.yaml

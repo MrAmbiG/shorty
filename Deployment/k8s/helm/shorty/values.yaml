@@ -8,7 +8,15 @@ image:
   repository: gajuambi/shorty
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: latest
+
+env:
+  SHORTYPGDB: ""
+  SHORTYPGPASSWORD: ""
+  SHORTYPGHOST: ""
+  SHORTYPGPORT: ""
+  DJANGOSECRETKEY: ""
+  SHORTYPGUSERNAME: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -33,12 +41,13 @@ securityContext: {}
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  runAsNonRoot: true
+  # runAsNonRoot: true
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
+  # the port on which the application is running
   targetPort: 8000
 
 ingress:

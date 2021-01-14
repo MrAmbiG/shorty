@@ -12,7 +12,12 @@ A url shortener for and on kubernetes
 ## Running docker image [working]
 If you are running a docker image then pass an env file `--env-file`
 https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file
-`docker rm shorty -f &&  docker build -t gajuambi/shorty -f .\Deployment\Dockerfile . && docker run --name shorty -it --env-file .env -p 80:8000 gajuambi/shorty`
+#### windows
+`docker rm shorty -f &&  docker build -t gajuambi/shorty:latest -f .\Deployment\Dockerfile . && docker run --name shorty -it --env-file .env -p 80:8000 gajuambi/shorty`
+
+#### linux
+`docker rm shorty -f && docker build -t gajuambi/shorty:latest -f ./Deployment/Dockerfile . && docker run --name shorty -it --env-file .env -p 80:8000 gajuambi/shorty`
+
 
 ## Docker-compose [working]
 `cd Deployment`

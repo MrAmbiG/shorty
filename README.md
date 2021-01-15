@@ -1,6 +1,6 @@
 # shorty
 
-A url shortener for and on kubernetes
+A url shortener for and on kubernetes. Please use a nginx for https/tls for the same.
 ## Pre requisites
 - Following environment variables should be set before you start the app/server.
     - SHORTY_PG_HOST

@@ -1,19 +1,18 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block title %}shorty{% endblock title %}
-
+{% comment %} .button-background {background-color:#000000;} {% endcomment %}
 {% block content %}
-<div class="card mx-auto shadow p-3 mb-5 bg-white rounded text-left" style="max-width: 30rem;">
-    <div class="card-body lead">
-        <form method="post">
-            {% csrf_token %}
-            <div class="container">
-                  {{ form|crispy }}
+    <div class="container mx-auto text-center">
+        <br><br><br>
+        <h1 style=font-size:70px;>URL Shortener</h1>
+        <br>
+        <form>
+            <div class="form-group">
+            {{ form | crispy  }}
             </div>
-            <br>
-            <input type="submit" class="btn btn-primary" value="submit">
+            <button type="submit" class="btn btn-primary">Shorten It</button>
         </form>
     </div>
-</div>
 {% endblock content %}
 
